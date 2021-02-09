@@ -19,9 +19,9 @@ module.exports = function(app) {
     app.post("/api/notes", function(req, res) {
 
         let newNote = req.body;
-        let noteID = (noteData.length).toString();
-        console.log(noteID);
-        newNote.id = noteID;
+        let uniqueID = (noteData.length).toString();
+        console.log(uniqueID);
+        newNote.id = uniqueID;
         noteData.push(newNote);
         
         fs.writeFileSync("./db/db.json", JSON.stringify(noteData), function(err) {
@@ -38,7 +38,22 @@ module.exports = function(app) {
     //In order to delete a note, you'll need to read all notes 
     //from the db.json file, remove the note with the given id 
     //property, and then rewrite the notes to the db.json file.
-    app.delete("/api/notes/:id", function(req, res) { };
+    app.delete("/api/notes/:id", function(req, res) { 
+        let noteID = req.params.id;
+        let newID = 0;
+        console.log("Deleting note with id " + noteID);
+        
+        noteData = noteData.filter(currentNote => {
+        return currentNote.id != noteID;
+    });
+
+        for (currentNote of noteData) {
+        currentNote.id = newID.toString();
+        newID++;
+    }
+    fs.writeFileSync("./db/db.json", JSON.stringify(noteData));
+    res.json(noteData);
+}); 
 
     
 }
