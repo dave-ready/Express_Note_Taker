@@ -1,7 +1,7 @@
 //Require dependencies
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
+//const fs = require('fs');
+//const path = require('path');
 
 //create express server and set port to 8080
 
